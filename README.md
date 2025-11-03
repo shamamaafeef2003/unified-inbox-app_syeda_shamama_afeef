@@ -1,4 +1,4 @@
-# Unified Inbox - Multi-Channel Customer Outreach Platform
+# Unified Inbox - Multi-Channel Customer Outreach Platform__ Syeda Shamama Afeef
 
 A full-stack Next.js application for centralized customer communication across SMS, WhatsApp, Email, and social media channels.
 
