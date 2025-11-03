@@ -1,8 +1,9 @@
 {
+  "version": 2,
   "crons": [
     {
       "path": "/api/scheduler",
-      "schedule": "0 * * * *"  // every hour
+      "schedule": "0 0 * * *"
     }
   ],
   "env": {
