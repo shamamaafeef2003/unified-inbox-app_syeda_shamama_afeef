@@ -1,0 +1,111 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String?
+  password      String
+  role          Role      @default(EDITOR)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  messages      Message[]
+  notes         Note[]
+  sessions      Session[]
+}
+
+enum Role {
+  ADMIN
+  EDITOR
+  VIEWER
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+}
+
+model Contact {
+  id             String    @id @default(cuid())
+  name           String?
+  phone          String?
+  email          String?
+  whatsapp       String?
+  twitterHandle  String?
+  facebookId     String?
+  tags           String[]
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  messages       Message[]
+  notes          Note[]
+}
+
+model Message {
+  id          String        @id @default(cuid())
+  contactId   String
+  contact     Contact       @relation(fields: [contactId], references: [id])
+  userId      String?
+  user        User?         @relation(fields: [userId], references: [id])
+  channel     Channel
+  direction   Direction
+  content     String
+  status      MessageStatus @default(SENT)
+  mediaUrl    String?
+  scheduledAt DateTime?
+  sentAt      DateTime?
+  readAt      DateTime?
+  createdAt   DateTime      @default(now())
+  metadata    Json?
+}
+
+enum Channel {
+  SMS
+  WHATSAPP
+  EMAIL
+  TWITTER
+  FACEBOOK
+}
+
+enum Direction {
+  INBOUND
+  OUTBOUND
+}
+
+enum MessageStatus {
+  SCHEDULED
+  SENT
+  DELIVERED
+  READ
+  FAILED
+}
+
+model Note {
+  id        String   @id @default(cuid())
+  contactId String
+  contact   Contact  @relation(fields: [contactId], references: [id])
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  content   String
+  isPrivate Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ScheduledMessage {
+  id          String   @id @default(cuid())
+  contactId   String
+  channel     Channel
+  content     String
+  scheduledAt DateTime
+  status      String   @default("PENDING")
+  createdAt   DateTime @default(now())
+}

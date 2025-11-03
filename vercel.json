@@ -1,0 +1,22 @@
+{
+  "crons": [
+    {
+      "path": "/api/cron/process-scheduled",
+      "schedule": "* * * * *"
+    }
+  ],
+  "env": {
+    "DATABASE_URL": "@database-url",
+    "TWILIO_ACCOUNT_SID": "@twilio-account-sid",
+    "TWILIO_AUTH_TOKEN": "@twilio-auth-token",
+    "TWILIO_PHONE_NUMBER": "@twilio-phone-number",
+    "TWILIO_WHATSAPP_NUMBER": "@twilio-whatsapp-number",
+    "NEXTAUTH_SECRET": "@nextauth-secret",
+    "CRON_SECRET": "@cron-secret"
+  },
+  "build": {
+    "env": {
+      "DATABASE_URL": "@database-url"
+    }
+  }
+}
